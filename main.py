@@ -37,6 +37,8 @@ def get_diff(repo, src, dest):
 
     try:
         response = requests.get(url, headers=headers)
+        print('============ RESPONSE ============')
+        print(response.text)
         response.raise_for_status()
 
         return response.text
