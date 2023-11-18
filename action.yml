@@ -1,4 +1,4 @@
-name: Run Python Script
+name: Chat GPT auto review
 
 on:
   push:
