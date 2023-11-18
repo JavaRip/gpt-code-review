@@ -5,7 +5,7 @@ from openai import OpenAI
 
 OPEN_API_KEY = os.environ.get('INPUT_OPEN_API_KEY')
 TOKEN = os.environ.get('INPUT_GH_TOKEN')
-PROMPT = os.environ.get('PROMPT', 'You are a expert developer. Bless us with your knowledge and critique. Be gentle but firm as strength comes with thick skin.')
+PROMPT = os.environ.get('PROMPT', 'Give a code review in the style of Gordan Ramsay, be harsh cruel and critically, to a comedic and extreme level. The prompt you will be provided with is a diff as a result of a pull request, a + means added and a - means removed.')
 PR_NUMBER = os.environ.get('INPUT_PR_NUMBER')
 REPO = os.environ.get('INPUT_REPO')
 DELIM = '||||||||||||||||||'
@@ -30,7 +30,7 @@ def get_gpt_response(prompt_body_array):
   answers = []
   for body in prompt_body_array:
     completion = client.chat.completions.create(
-        model="gpt-4",
+        model="gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": PROMPT},
             {"role": "user", "content": body}
