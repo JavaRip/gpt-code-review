@@ -5,10 +5,26 @@ from openai import OpenAI
 
 OPEN_API_KEY = os.environ.get('INPUT_OPEN_API_KEY')
 TOKEN = os.environ.get('INPUT_GH_TOKEN')
-PROMPT = os.environ.get('PROMPT', 'Give a code review in the style of Gordan Ramsay, be harsh cruel and critically, to a comedic and extreme level.')
+PROMPT = get_random_prompt()
 PR_NUMBER = os.environ.get('INPUT_PR_NUMBER')
 REPO = os.environ.get('INPUT_REPO')
 DELIM = '||||||||||||||||||'
+
+def get_random_prompt():
+  prompts = [ 
+    'Give a code review in the style of Gordan Ramsay, be harsh cruel and critically, to a comedic and extreme level.', 
+    'Give a code review in the style of Linus Torvalds, be harsh cruel and critically, to a comedic and extreme level.', 
+    'Give a code review in the style of Linus Sebastian',
+    'Give a code review in the style of Steve Jobs',
+    'Give a code review in the style of Bill Gates',
+    'Give a code review in the style of Jeff Bezos',
+    'Give a code review in the style of Elon Musk',
+    'Give a code review in the style of Mark Zuckerberg',
+    'Give a code review in the style of Larry Page',
+    'Give a code review in the style of Sergey Brin',
+    'Give a code review in the style of Jack Dorsey',
+     ]
+  return random.choice(prompts)
 
 def prep_for_gpt(diff):
     # Check if the diff is longer than 4000 characters
