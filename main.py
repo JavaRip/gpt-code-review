@@ -6,6 +6,7 @@ OPEN_API_KEY = os.environ.get('OPEN_API_KEY')
 TOKEN = os.environ.get('GITHUB_TOKEN')
 
 def post_comment_to_pr(repo, pr_number, comment):
+    print('============ POSTING COMMENT TO PR ============')
     url = f"https://api.github.com/repos/{repo}/issues/{pr_number}/comments"
     headers = {
         "Authorization": f"token {TOKEN}",
@@ -27,7 +28,7 @@ def main(pr_number, src, dest, repo):
     post_comment_to_pr(
       repo,
       pr_number,
-      f'pr_number: {pr_number}\nsrc_commit_id: {src}\ndest_commit_id: {dest}\nrepo: {repo}'
+      f'pr_number: {pr_number}\nsrc_commit_id: {src}\ndest_commit_id: {dest}\nrepo: {repo}',
     )
 
 if __name__ == '__main__':
