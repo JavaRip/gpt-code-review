@@ -10,22 +10,22 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-		'src',
-		type=str,
-		help='the commit or branch the merge is coming from',
+      'src',
+      type=str,
+      help='the commit or branch the merge is coming from',
     )
 
     parser.add_argument(
-		'dest',
-		type=str,
-		help='the commit or branch the merge is coming into',
+      'dest',
+      type=str,
+      help='the commit or branch the merge is coming into',
     )
 
     parser.add_argument(
-		'pr',
-		type=str,
-		help='the pr number to append the output to as a comment',
+      'pr',
+      type=str,
+      help='the pr number to append the output to as a comment',
     )
 
     args = parser.parse_args()
-    main(args.commit_id)
+    main(args.pr, args.src, args.dest)
