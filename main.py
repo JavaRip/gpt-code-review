@@ -10,6 +10,7 @@ DELIM = os.environ.get('DELIM')
 
 def prep_for_gpt(diff):
     # Check if the diff is longer than 4000 characters
+    print('delete me')
     if len(diff) > 4000:
         # Split the diff using the provided delimiter
         split_diffs = diff.split(DELIM)
