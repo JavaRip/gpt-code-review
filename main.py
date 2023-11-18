@@ -1,6 +1,7 @@
 import requests
 import argparse
 import os
+from openai import OpenAI
 
 OPEN_API_KEY = os.environ.get('OPEN_API_KEY')
 TOKEN = os.environ.get('GH_TOKEN')
@@ -17,6 +18,22 @@ def prep_for_gpt(diff):
       return diff.split(DELIM)
     else:
       return [diff]
+
+def get_gpt_response(prompt_body_array):
+  client = OpenAI()
+  answers = []
+  for body in prompt_body_array:
+    completion = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": PROMPT},
+            {"role": "user", "content": body}
+        ]
+    )
+    answers.append(completion.choices[0].)
+
+
+print(completion.choices[0].message)
 
 def remove_ignored(diff, ignored):
     ret_array = []
