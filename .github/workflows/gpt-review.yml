@@ -27,7 +27,7 @@ jobs:
 
     - name: Run script
       env:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
         OPEN_API_KEY: ${{ secrets.OPEN_API_KEY }}
       run: |
         pipenv run python main.py ${{ github.event.pull_request.head.ref }} ${{ github.event.pull_request.base.ref }} ${{ github.event.pull_request.number }} ${{ github.repository }}
