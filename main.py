@@ -3,7 +3,7 @@ import argparse
 import os
 
 OPEN_API_KEY = os.environ.get('OPEN_API_KEY')
-TOKEN = os.environ.get('GITHUB_TOKEN')
+TOKEN = os.environ.get('GH_TOKEN')
 
 def post_comment_to_pr(repo, pr_number, comment):
     print('============ POSTING COMMENT TO PR ============')
