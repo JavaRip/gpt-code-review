@@ -3,11 +3,11 @@ import argparse
 import os
 from openai import OpenAI
 
-OPEN_API_KEY = os.environ.get('INPUT_OPEN_API_KEY')
-TOKEN = os.environ.get('INPUT_GH_TOKEN')
-PROMPT = os.environ.get('PROMPT', 'You are a expert developer. Bless us with your knowledge and critique. Be gentle but firm as strength comes with thick skin.')
-PR_NUMBER = os.environ.get('INPUT_PR_NUMBER')
-REPO = os.environ.get('INPUT_REPO')
+OPEN_API_KEY = os.environ.get('OPEN_API_KEY')
+TOKEN = os.environ.get('GH_TOKEN')
+PROMPT = os.environ.get('PROMPT', 'Give a code review in the style of Gordan Ramsay, be harsh cruel and critically, to a comedic and extreme level.')
+PR_NUMBER = os.environ.get('PR_NUMBER')
+REPO = os.environ.get('REPO')
 DELIM = '||||||||||||||||||'
 
 def prep_for_gpt(diff):
@@ -16,21 +16,24 @@ def prep_for_gpt(diff):
         # Split the diff using the provided delimiter
         split_diffs = diff.split(DELIM)
 
-        # Check each split part's length
-        for part in split_diffs:
-            if len(part) > 4000:
-                print('WARNING: ITEM IN DIFF TOO LONG')
+        # Filter out parts that are too long
+        filtered_diffs = [part for part in split_diffs if len(part) <= 4000]
 
-        return split_diffs
+        # Optionally, print a warning if any parts were removed
+        if len(filtered_diffs) < len(split_diffs):
+            print('WARNING: Some items in diff were too long and have been removed')
+
+        return filtered_diffs
     else:
         return [diff]
+
 
 def get_gpt_response(prompt_body_array):
   client = OpenAI(api_key=OPEN_API_KEY)
   answers = []
   for body in prompt_body_array:
     completion = client.chat.completions.create(
-        model="gpt-4",
+        model="gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": PROMPT},
             {"role": "user", "content": body}
@@ -106,6 +109,8 @@ def main(pr_number, repo):
     )
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    args = parser.parse_args()
     main(
       PR_NUMBER,
       REPO,
