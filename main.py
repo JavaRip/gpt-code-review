@@ -10,13 +10,22 @@ DELIM = os.environ.get('DELIM')
 def prep_for_gpt(diff):
     print('=============== PREP FOR GPT =================')
     print(diff)
+
+    # Check if the diff is longer than 4000 characters
     if len(diff) > 4000:
-      for diff in diff.split(DELIM):
-          if len(diff) > 4000:
-              print('WARNING ITEM IN DIFF TOO LONG')
-      return diff.split(DELIM)
+        print('splitting')
+
+        # Split the diff using the provided delimiter
+        split_diffs = diff.split(DELIM)
+
+        # Check each split part's length
+        for part in split_diffs:
+            if len(part) > 4000:
+                print('WARNING: ITEM IN DIFF TOO LONG')
+
+        return split_diffs
     else:
-      return [diff]
+        return [diff]
 
 def remove_ignored(diff, ignored):
     ret_array = []
