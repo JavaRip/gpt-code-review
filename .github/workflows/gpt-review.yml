@@ -17,11 +17,18 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.12' # Specify the Python version
+        python-version: '3.11'
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
+        python -m pip install pipenv
+        pipenv install
 
     - name: Run script
-      run: python main.py
+      env:
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        OPEN_API_KEY: ${{ secrets.OPEN_API_KEY }}
+        DELIM: ${{ secrets.DELIM }}
+      run: |
+        pipenv run python main.py ${{ github.event.pull_request.head.ref }} ${{ github.event.pull_request.base.ref }} ${{ github.event.pull_request.number }} ${{ github.repository }}
