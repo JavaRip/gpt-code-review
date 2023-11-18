@@ -8,13 +8,8 @@ PROMPT = os.environ.get('PROMPT', 'You are a expert developer. Bless us with you
 DELIM = os.environ.get('DELIM')
 
 def prep_for_gpt(diff):
-    print('=============== PREP FOR GPT =================')
-    print(diff)
-
     # Check if the diff is longer than 4000 characters
     if len(diff) > 4000:
-        print('splitting')
-
         # Split the diff using the provided delimiter
         split_diffs = diff.split(DELIM)
 
@@ -29,7 +24,7 @@ def prep_for_gpt(diff):
 
 def remove_ignored(diff, ignored):
     ret_array = []
-    diff_array = diff.split('diff')
+    diff_array = diff.split('diff --git')
 
     for diff in diff_array:
         ignore_diff = False
@@ -83,7 +78,9 @@ def main(pr_number, src, dest, repo):
     filtered_diff = remove_ignored(diff, ['Pipfile.lock'])
     prompts = prep_for_gpt(filtered_diff)
     print('================================')
-    print(prompts)
+    for prompt in prompts:
+      print(prompt)
+      print('--------------------------------')
     print('================================')
     answers = prompts # get from chatblt
 
