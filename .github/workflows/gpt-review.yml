@@ -25,4 +25,4 @@ jobs:
         python -m pip install --upgrade pip
 
     - name: Run script
-      run: python script.py
+      run: python main.py
