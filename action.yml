@@ -1,35 +1,23 @@
-name: Chat GPT auto review
-description: Save time with chatgpt
+name: 'Chat GPT Auto Review'
+description: 'Save time with chatgpt'
+inputs:
+  GH_TOKEN:
+    description: 'GitHub Token'
+    required: true
+  OPEN_API_KEY:
+    description: 'OpenAI API Key'
+    required: true
+  DELIM:
+    description: 'Delimiter'
+    required: true
+  PR_NUMBER:
+    description: 'The PR number to append the review to'
+    required: true
+  REPO:
+    description: 'The repo to append the review to'
+    required: true
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-jobs:
-  run-script:
-    runs-on: ubuntu-22.04
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.11'
-
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        python -m pip install pipenv
-        pipenv install
-
-    - name: Run script
-      env:
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        OPEN_API_KEY: ${{ secrets.OPEN_API_KEY }}
-        DELIM: ${{ secrets.DELIM }}
-      run: |
-        pipenv run python main.py ${{ github.event.pull_request.head.ref }} ${{ github.event.pull_request.base.ref }} ${{ github.event.pull_request.number }} ${{ github.repository }}
+python main.py feature/cli-args main 6 JavaRip/gpt-code-review

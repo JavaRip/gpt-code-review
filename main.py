@@ -6,7 +6,9 @@ from openai import OpenAI
 OPEN_API_KEY = os.environ.get('OPEN_API_KEY')
 TOKEN = os.environ.get('GH_TOKEN')
 PROMPT = os.environ.get('PROMPT', 'You are a expert developer. Bless us with your knowledge and critique. Be gentle but firm as strength comes with thick skin.')
-DELIM = os.environ.get('DELIM')
+PR_NUMBER = os.environ.get('PR_NUMBER')
+REPO = os.environ.get('REPO')
+DELIM = '||||||||||||||||||'
 
 def prep_for_gpt(diff):
     # Check if the diff is longer than 4000 characters
@@ -65,7 +67,7 @@ def post_comment_to_pr(repo, pr_number, comment):
     response = requests.post(url, json=data, headers=headers)
     return response
 
-def get_diff(repo, src, dest, pr_number):
+def get_diff(repo, pr_number):
     url = f"https://api.github.com/repos/{repo}/pulls/{pr_number}"
     headers = {
         "Authorization": f"token {TOKEN}",
@@ -83,14 +85,12 @@ def get_diff(repo, src, dest, pr_number):
         print(f'Other error occurred: {err}')
     return None
 
-def main(pr_number, src, dest, repo):
+def main(pr_number, repo):
     print('=============== MAIN =================')
     print(f'pr_number: {pr_number}')
-    print(f'src_commit_id: {src}')
-    print(f'dest_commit_id: {dest}')
     print(f'repo: {repo}')
 
-    diff = get_diff(repo, src, dest, pr_number)
+    diff = get_diff(repo, pr_number)
     filtered_diff = remove_ignored(diff, ['Pipfile.lock'])
     prompts = prep_for_gpt(filtered_diff)
     answers = get_gpt_response(prompts) # get from chatblt
@@ -107,35 +107,8 @@ def main(pr_number, src, dest, repo):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-
-    parser.add_argument(
-      'src',
-      type=str,
-      help='the commit or branch the merge is coming from',
-    )
-
-    parser.add_argument(
-      'dest',
-      type=str,
-      help='the commit or branch the merge is coming into',
-    )
-
-    parser.add_argument(
-      'pr',
-      type=str,
-      help='the pr number to append the output to as a comment',
-    )
-
-    parser.add_argument(
-      'repo',
-      type=str,
-      help='the repo to run the script on',
-    )
-
     args = parser.parse_args()
     main(
-      args.pr,
-      args.src,
-      args.dest,
-      args.repo,
+      PR_NUMBER,
+      REPO,
     )
