@@ -1,6 +1,7 @@
 import requests
 import argparse
 import os
+import random
 from openai import OpenAI
 
 OPEN_API_KEY = os.environ.get('INPUT_OPEN_API_KEY')
@@ -9,7 +10,7 @@ PROMPT = get_random_prompt()
 PR_NUMBER = os.environ.get('INPUT_PR_NUMBER')
 REPO = os.environ.get('INPUT_REPO')
 DELIM = '||||||||||||||||||'
-
+#Frustration meter based off length of comment so far, if it reaches a certain level it 
 def get_random_prompt():
   prompts = [ 
     'Give a code review in the style of Gordan Ramsay, be harsh cruel and critically, to a comedic and extreme level.', 
