@@ -10,7 +10,7 @@ COPY Pipfile.lock ./
 
 # Install Pipenv and any dependencies
 RUN pip install --no-cache-dir pipenv && \
-    pipenv install
+    pipenv install /app/Pipfile
 
 # Copy the rest of your action's code to the working directory
 COPY . .
