@@ -24,4 +24,8 @@ jobs:
         python -m pip install --upgrade pip
 
     - name: Run script
-      run: python main.py ${{ github.event.pull_request.head.sha }} ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.number }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        OPEN_API_KEY: ${{ secrets.OPEN_API_KEY }}
+      run: |
+        python main.py ${{ github.event.pull_request.head.ref }} ${{ github.event.pull_request.base.ref }} ${{ github.event.pull_request.number }} ${{ github.repository }}
