@@ -30,10 +30,9 @@ def get_gpt_response(prompt_body_array):
             {"role": "user", "content": body}
         ]
     )
-    answers.append(completion.choices[0].)
+    answers.append(completion.choices[0].message.content)
 
-
-print(completion.choices[0].message)
+  return answers
 
 def remove_ignored(diff, ignored):
     ret_array = []
@@ -90,13 +89,12 @@ def main(pr_number, src, dest, repo):
     diff = get_diff(repo, src, dest, pr_number)
     filtered_diff = remove_ignored(diff, ['Pipfile.lock'])
     prompts = prep_for_gpt(filtered_diff)
-    print('================================')
-    print(prompts)
-    print('================================')
-    answers = prompts # get from chatblt
+    answers = get_gpt_response(prompts) # get from chatblt
 
     comment = '\n'.join(answers)
-
+    print('================================')
+    print(comment)
+    print('================================')
     post_comment_to_pr(
       repo,
       pr_number,
