@@ -23,13 +23,14 @@ def post_comment_to_pr(repo, pr_number, comment):
     response = requests.post(url, json=data, headers=headers)
     return response
 
-def get_diff(repo, src, dest):
+def get_diff(repo, src, dest, pr_number):
     print('============ GETTING DIFF ============')
     print(f'repo: {repo}')
     print(f'src: {src}')
     print(f'dest: {dest}')
 
-    url = f"https://api.github.com/repos/{repo}/compare/{src}...{dest}"
+    # url = f"https://api.github.com/repos/{repo}/compare/{src}...{dest}"
+    url = f"https://api.github.com/repos/{repo}/pulls/{pr_number}"
     headers = {
         "Authorization": f"token {TOKEN}",
         "Accept": "application/vnd.github.v3.diff"
@@ -54,7 +55,7 @@ def main(pr_number, src, dest, repo):
     print(f'dest_commit_id: {dest}')
     print(f'repo: {repo}')
 
-    comment = get_diff(repo, src, dest)
+    comment = get_diff(repo, src, dest, pr_number)
 
     post_comment_to_pr(
       repo,
