@@ -2,7 +2,7 @@
 FROM python:3.11-slim
 
 # Set the working directory in the container
-WORKDIR /app
+WORKDIR /app/action
 
 # Copy the dependencies file to the working directory
 COPY Pipfile ./
@@ -17,4 +17,4 @@ COPY . .
 
 # Run the script when the container launches
 # Replace `your_script.py` with the script you want to run
-CMD ["pipenv", "run", "python", "app/main.py"]
+CMD ["pipenv", "run", "python", "/app/action/main.py"]
