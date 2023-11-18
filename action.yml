@@ -1,4 +1,5 @@
 name: Chat GPT auto review
+description: Save time with chatgpt
 
 on:
   push:
