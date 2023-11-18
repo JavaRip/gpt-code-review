@@ -8,9 +8,15 @@ PROMPT = os.environ.get('PROMPT', 'You are a expert developer. Bless us with you
 DELIM = os.environ.get('DELIM')
 
 def prep_for_gpt(diff):
-    max_length = 3800
-    shortened_diff = diff if len(diff) <= max_length else diff[:max_length]
-    return [shortened_diff]
+    print('=============== PREP FOR GPT =================')
+    print(diff)
+    if len(diff) > 4000:
+      for diff in diff.split(DELIM):
+          if len(diff) > 4000:
+              print('WARNING ITEM IN DIFF TOO LONG')
+      return diff.split(DELIM)
+    else:
+      return [diff]
 
 def remove_ignored(diff, ignored):
     ret_array = []
