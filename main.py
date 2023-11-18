@@ -20,7 +20,7 @@ def prep_for_gpt(diff):
       return [diff]
 
 def get_gpt_response(prompt_body_array):
-  client = OpenAI()
+  client = OpenAI(api_key=OPEN_API_KEY)
   answers = []
   for body in prompt_body_array:
     completion = client.chat.completions.create(
