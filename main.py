@@ -7,6 +7,10 @@ TOKEN = os.environ.get('GITHUB_TOKEN')
 
 def post_comment_to_pr(repo, pr_number, comment):
     print('============ POSTING COMMENT TO PR ============')
+    print(f'repo: {repo}')
+    print(f'pr_number: {pr_number}')
+    print(f'comment: {comment}')
+
     url = f"https://api.github.com/repos/{repo}/issues/{pr_number}/comments"
     headers = {
         "Authorization": f"token {TOKEN}",
