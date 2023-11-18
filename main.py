@@ -35,8 +35,16 @@ def get_diff(repo, src, dest):
         "Accept": "application/vnd.github.v3.diff"
     }
 
-    response = requests.get(url, headers=headers)
-    return response
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+
+        return response.text
+    except requests.exceptions.HTTPError as http_err:
+        print(f'HTTP error occurred: {http_err}')
+    except Exception as err:
+        print(f'Other error occurred: {err}')
+    return None
 
 def main(pr_number, src, dest, repo):
     print(f'pr_number: {pr_number}')
