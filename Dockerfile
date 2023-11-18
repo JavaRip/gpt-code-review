@@ -17,4 +17,4 @@ COPY . .
 
 # Run the script when the container launches
 # Replace `your_script.py` with the script you want to run
-CMD ["pipenv", "run", "python", "app/main.py"]
+CMD ["pipenv", "run", "python", "/app/main.py"]
