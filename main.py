@@ -30,7 +30,7 @@ def get_gpt_response(prompt_body_array):
   answers = []
   for body in prompt_body_array:
     completion = client.chat.completions.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4",
         messages=[
             {"role": "system", "content": PROMPT},
             {"role": "user", "content": body}
