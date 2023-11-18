@@ -19,5 +19,3 @@ inputs:
 runs:
   using: 'docker'
   image: 'Dockerfile'
-
-python main.py feature/cli-args main 6 JavaRip/gpt-code-review
