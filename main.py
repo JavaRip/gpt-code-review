@@ -5,16 +5,12 @@ import os
 OPEN_API_KEY = os.environ.get('OPEN_API_KEY')
 TOKEN = os.environ.get('GH_TOKEN')
 PROMPT = os.environ.get('PROMPT', 'You are a expert developer. Bless us with your knowledge and critique. Be gentle but firm as strength comes with thick skin.')
+DELIM = os.environ.get('DELIM')
 
 def prep_for_gpt(diff):
-    print('=============== PREP FOR GPT =================')
-    if len(diff) > 4000:
-      for diff in diff.split('\n########\n'):
-          if len(diff) > 4000:
-              print('WARNING ITEM IN DIFF TOO LONG')
-      return diff.split('\n########\n')
-    else:
-      return [diff]
+    max_length = 3800
+    shortened_diff = diff if len(diff) <= max_length else diff[:max_length]
+    return [shortened_diff]
 
 def remove_ignored(diff, ignored):
     ret_array = []
@@ -28,7 +24,7 @@ def remove_ignored(diff, ignored):
         if not ignore_diff:
             ret_array.append(diff)
 
-    return '\n########\n'.join(ret_array)
+    return DELIM.join(ret_array)
 
 def post_comment_to_pr(repo, pr_number, comment):
     url = f"https://api.github.com/repos/{repo}/issues/{pr_number}/comments"
@@ -71,6 +67,9 @@ def main(pr_number, src, dest, repo):
     diff = get_diff(repo, src, dest, pr_number)
     filtered_diff = remove_ignored(diff, ['Pipfile.lock'])
     prompts = prep_for_gpt(filtered_diff)
+    print('================================')
+    print(prompts)
+    print('================================')
     answers = prompts # get from chatblt
 
     comment = '\n'.join(answers)
