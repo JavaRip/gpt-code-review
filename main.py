@@ -1,6 +1,7 @@
 import requests
 import argparse
 import os
+from openai import OpenAI
 
 OPEN_API_KEY = os.environ.get('OPEN_API_KEY')
 TOKEN = os.environ.get('GH_TOKEN')
@@ -21,6 +22,21 @@ def prep_for_gpt(diff):
         return split_diffs
     else:
         return [diff]
+
+def get_gpt_response(prompt_body_array):
+  client = OpenAI(api_key=OPEN_API_KEY)
+  answers = []
+  for body in prompt_body_array:
+    completion = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": PROMPT},
+            {"role": "user", "content": body}
+        ]
+    )
+    answers.append(completion.choices[0].message.content)
+
+  return answers
 
 def remove_ignored(diff, ignored):
     ret_array = []
@@ -77,15 +93,12 @@ def main(pr_number, src, dest, repo):
     diff = get_diff(repo, src, dest, pr_number)
     filtered_diff = remove_ignored(diff, ['Pipfile.lock'])
     prompts = prep_for_gpt(filtered_diff)
-    print('================================')
-    for prompt in prompts:
-      print(prompt)
-      print('--------------------------------')
-    print('================================')
-    answers = prompts # get from chatblt
+    answers = get_gpt_response(prompts) # get from chatblt
 
     comment = '\n'.join(answers)
-
+    print('================================')
+    print(comment)
+    print('================================')
     post_comment_to_pr(
       repo,
       pr_number,
