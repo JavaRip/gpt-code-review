@@ -5,25 +5,26 @@ def main(pr_number, src_commit_id, dest_commit_id):
     print(f'src_commit_id: {src_commit_id}')
     print(f'dest_commit_id: {dest_commit_id}')
 
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-	'source-commit-id',
-	type=str,
-	help='the commit the merge is coming from',
+		'src',
+		type=str,
+		help='the commit or branch the merge is coming from',
     )
 
     parser.add_argument(
-	'dest-commit-id',
-	type=str,
-	help='the commit the merge is coming into',
+		'dest',
+		type=str,
+		help='the commit or branch the merge is coming into',
     )
 
     parser.add_argument(
-	'pr-number',
-	type=str,
-	help='the pr number',
+		'pr',
+		type=str,
+		help='the pr number to append the output to as a comment',
     )
 
     args = parser.parse_args()
