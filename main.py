@@ -23,7 +23,7 @@ def main(pr_number, src, dest, repo):
     print(f'pr_number: {pr_number}')
     print(f'src_commit_id: {src}')
     print(f'dest_commit_id: {dest}')
-    print(f'dest_commit_id: {repo}')
+    print(f'repo: {repo}')
 
     post_comment_to_pr(
       repo,
