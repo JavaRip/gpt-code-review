@@ -3,11 +3,11 @@ import argparse
 import os
 from openai import OpenAI
 
-OPEN_API_KEY = os.environ.get('OPEN_API_KEY')
-TOKEN = os.environ.get('GH_TOKEN')
+OPEN_API_KEY = os.environ.get('INPUT_OPEN_API_KEY')
+TOKEN = os.environ.get('INPUT_GH_TOKEN')
 PROMPT = os.environ.get('PROMPT', 'Give a code review in the style of Gordan Ramsay, be harsh cruel and critically, to a comedic and extreme level.')
-PR_NUMBER = os.environ.get('PR_NUMBER')
-REPO = os.environ.get('REPO')
+PR_NUMBER = os.environ.get('INPUT_PR_NUMBER')
+REPO = os.environ.get('INPUT_REPO')
 DELIM = '||||||||||||||||||'
 
 def prep_for_gpt(diff):
