@@ -6,7 +6,7 @@ from openai import OpenAI
 
 OPEN_API_KEY = os.environ.get('INPUT_OPEN_API_KEY')
 TOKEN = os.environ.get('INPUT_GH_TOKEN')
-PROMPT = get_random_prompt()
+PROMPT = ''
 PR_NUMBER = os.environ.get('INPUT_PR_NUMBER')
 REPO = os.environ.get('INPUT_REPO')
 DELIM = '||||||||||||||||||'
@@ -106,6 +106,8 @@ def main(pr_number, repo):
     print('=============== MAIN =================')
     print(f'pr_number: {pr_number}')
     print(f'repo: {repo}')
+    global PROMPT
+    PROMPT = get_random_prompt()
 
     diff = get_diff(repo, pr_number)
     filtered_diff = remove_ignored(diff, ['Pipfile.lock'])
