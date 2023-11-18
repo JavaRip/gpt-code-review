@@ -3,11 +3,11 @@ import argparse
 import os
 from openai import OpenAI
 
-OPEN_API_KEY = os.environ.get('OPEN_API_KEY')
-TOKEN = os.environ.get('GH_TOKEN')
+OPEN_API_KEY = os.environ.get('INPUT_OPEN_API_KEY')
+TOKEN = os.environ.get('INPUT_GH_TOKEN')
 PROMPT = os.environ.get('PROMPT', 'You are a expert developer. Bless us with your knowledge and critique. Be gentle but firm as strength comes with thick skin.')
-PR_NUMBER = os.environ.get('PR_NUMBER')
-REPO = os.environ.get('REPO')
+PR_NUMBER = os.environ.get('INPUT_PR_NUMBER')
+REPO = os.environ.get('INPUT_REPO')
 DELIM = '||||||||||||||||||'
 
 def prep_for_gpt(diff):
@@ -106,8 +106,6 @@ def main(pr_number, repo):
     )
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    args = parser.parse_args()
     main(
       PR_NUMBER,
       REPO,
