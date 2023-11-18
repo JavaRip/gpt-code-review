@@ -9,6 +9,7 @@ DELIM = os.environ.get('DELIM')
 
 def prep_for_gpt(diff):
     # Check if the diff is longer than 4000 characters
+    console.log('this is not js but I think this will work')
     if len(diff) > 4000:
         # Split the diff using the provided delimiter
         split_diffs = diff.split(DELIM)
