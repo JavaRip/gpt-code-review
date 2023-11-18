@@ -4,13 +4,23 @@ import os
 
 OPEN_API_KEY = os.environ.get('OPEN_API_KEY')
 TOKEN = os.environ.get('GH_TOKEN')
+PROMPT = os.environ.get('PROMPT', 'You are a expert developer. Bless us with your knowledge and critique. Be gentle but firm as strength comes with thick skin.')
+
+def remove_ignored(diff, ignored):
+    ret_array = []
+    diff_array = diff.split('diff')
+
+    for diff in diff_array:
+        ignore_diff = False
+        for ignore in ignored:
+            if ignore in diff:
+                ignore_diff = True
+        if not ignore_diff:
+            ret_array.append(diff)
+
+    return '\n################################\n'.join(ret_array)
 
 def post_comment_to_pr(repo, pr_number, comment):
-    print('============ POSTING COMMENT TO PR ============')
-    print(f'repo: {repo}')
-    print(f'pr_number: {pr_number}')
-    print(f'comment: {comment}')
-
     url = f"https://api.github.com/repos/{repo}/issues/{pr_number}/comments"
     headers = {
         "Authorization": f"token {TOKEN}",
@@ -24,12 +34,6 @@ def post_comment_to_pr(repo, pr_number, comment):
     return response
 
 def get_diff(repo, src, dest, pr_number):
-    print('============ GETTING DIFF ============')
-    print(f'repo: {repo}')
-    print(f'src: {src}')
-    print(f'dest: {dest}')
-
-    # url = f"https://api.github.com/repos/{repo}/compare/{src}...{dest}"
     url = f"https://api.github.com/repos/{repo}/pulls/{pr_number}"
     headers = {
         "Authorization": f"token {TOKEN}",
@@ -38,8 +42,6 @@ def get_diff(repo, src, dest, pr_number):
 
     try:
         response = requests.get(url, headers=headers)
-        print('============ RESPONSE ============')
-        print(response.text)
         response.raise_for_status()
 
         return response.text
@@ -50,12 +52,15 @@ def get_diff(repo, src, dest, pr_number):
     return None
 
 def main(pr_number, src, dest, repo):
+    print('=============== MAIN =================')
     print(f'pr_number: {pr_number}')
     print(f'src_commit_id: {src}')
     print(f'dest_commit_id: {dest}')
     print(f'repo: {repo}')
 
-    comment = get_diff(repo, src, dest, pr_number)
+    diff = get_diff(repo, src, dest, pr_number)
+    comment = remove_ignored(diff, ['Pipfile.lock'])
+    print(comment)
 
     post_comment_to_pr(
       repo,
