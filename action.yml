@@ -7,9 +7,6 @@ inputs:
   OPEN_API_KEY:
     description: 'OpenAI API Key'
     required: true
-  DELIM:
-    description: 'Delimiter'
-    required: true
   PR_NUMBER:
     description: 'The PR number to append the review to'
     required: true
