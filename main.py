@@ -9,15 +9,19 @@ PROMPT = os.environ.get('PROMPT', 'You are a expert developer. Bless us with you
 DELIM = os.environ.get('DELIM')
 
 def prep_for_gpt(diff):
-    print('=============== PREP FOR GPT =================')
-    print(diff)
+    # Check if the diff is longer than 4000 characters
     if len(diff) > 4000:
-      for diff in diff.split(DELIM):
-          if len(diff) > 4000:
-              print('WARNING ITEM IN DIFF TOO LONG')
-      return diff.split(DELIM)
+        # Split the diff using the provided delimiter
+        split_diffs = diff.split(DELIM)
+
+        # Check each split part's length
+        for part in split_diffs:
+            if len(part) > 4000:
+                print('WARNING: ITEM IN DIFF TOO LONG')
+
+        return split_diffs
     else:
-      return [diff]
+        return [diff]
 
 def get_gpt_response(prompt_body_array):
   client = OpenAI(api_key=OPEN_API_KEY)
@@ -36,7 +40,7 @@ def get_gpt_response(prompt_body_array):
 
 def remove_ignored(diff, ignored):
     ret_array = []
-    diff_array = diff.split('diff')
+    diff_array = diff.split('diff --git')
 
     for diff in diff_array:
         ignore_diff = False
