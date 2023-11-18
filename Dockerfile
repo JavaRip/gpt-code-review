@@ -8,12 +8,8 @@ WORKDIR /app
 COPY . .
 
 # Install Pipenv and any dependencies
-RUN pip install --no-cache-dir pipenv && \
-    pipenv install 
-
-# Copy the rest of your action's code to the working directory
-
+RUN pip install requests openai
 
 # Run the script when the container launches
 # Replace `your_script.py` with the script you want to run
-CMD ["pipenv", "run", "python", "/app/main.py"]
+CMD ["python", "/app/main.py"]
